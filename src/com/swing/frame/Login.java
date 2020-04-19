@@ -57,7 +57,7 @@ public class Login extends JFrame {
 	 */
 	public Login() {
 		try {
-			accountDao = new AccountDao();
+			accountService = new AccountService();
 		} catch (ClassNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
