@@ -24,7 +24,7 @@ public class AccountService {
 		return AccountDao.getAccountById(id);
 	}
 
-	public boolean validate(Account a) {
+	public Account validate(Account a) throws SQLException {
 		return AccountDao.validate(a);
 	}
 }
