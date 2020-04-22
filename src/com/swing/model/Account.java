@@ -21,6 +21,10 @@ public class Account {
 		this.role = role;
 	}
 
+	public Account() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public int getId() {
 		return id;
 	}
