@@ -11,7 +11,10 @@ import javax.swing.SwingConstants;
 import java.awt.Font;
 
 public class AdminHome extends JFrame {
-
+	private int id;
+	private String username;
+	private String password;
+	private String role;
 	/**
 	 * 
 	 */
