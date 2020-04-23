@@ -1,6 +1,12 @@
 package com.swing.model;
 
 public class Ticket {
+	public Ticket(int order_id, int showtime_id, int seat_id) {
+		super();
+		this.order_id = order_id;
+		this.showtime_id = showtime_id;
+		this.seat_id = seat_id;
+	}
 	public Ticket(int id, int order_id, int showtime_id, int seat_id) {
 		super();
 		this.id = id;
@@ -8,6 +14,7 @@ public class Ticket {
 		this.showtime_id = showtime_id;
 		this.seat_id = seat_id;
 	}
+	
 	private int id;
 	private int order_id;
 	private int showtime_id;

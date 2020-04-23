@@ -3,11 +3,16 @@ package com.swing.model;
 import java.util.Date;
 
 public class Order {
-enum MyEnum{CONFIRMED,DENNIED};
 private int id;
 private int staff_id;
 private MyEnum status;
 private Date date;
+public Order(int staff_id, MyEnum status, Date date) {
+	super();
+	this.staff_id = staff_id;
+	this.status = status;
+	this.date = date;
+}
 public int getId() {
 	return id;
 }
@@ -34,4 +39,7 @@ public void setDate(Date date) {
 	this.date = date;
 }
 
+
 }
+
+
