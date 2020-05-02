@@ -1,13 +1,12 @@
 package com.swing.model;
 
-import java.util.Date;
-
+import java.util.*;
 public class Order {
 private int id;
 private int staff_id;
-private MyEnum status;
-private Date date;
-public Order(int staff_id, MyEnum status, Date date) {
+private String status;
+private String date;
+public Order(int staff_id,String status, String date) {
 	super();
 	this.staff_id = staff_id;
 	this.status = status;
@@ -26,16 +25,16 @@ public void setStaff_id(int staff_id) {
 	this.staff_id = staff_id;
 }
 public String getStatus() {
-    return this.status.name();
+    return this.status;
 }
 
 public void setStatus(String status) {
-    this.status = MyEnum.valueOf(status);
+    this.status = status;
 }
-public Date getDate() {
+public String getDate() {
 	return date;
 }
-public void setDate(Date date) {
+public void setDate(String date) {
 	this.date = date;
 }
 

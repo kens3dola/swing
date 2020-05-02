@@ -103,6 +103,9 @@ public class FormAddTicket extends JFrame {
 				
 					try {
 						ticketService.createTicket(a);
+						JOptionPane.showMessageDialog(contentPane, "Sucessfully added "
+								+ "");
+						new StaffHome().setVisible(true);
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();

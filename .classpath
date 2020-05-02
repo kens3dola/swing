@@ -11,12 +11,15 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/mysql-connector-java-8.0.13.jar">
+	<classpathentry kind="lib" path="lib/mysql-connector-java-8.0.13.jar" sourcepath="C:/Users/MyPC/.m2/repository/mysql/mysql-connector-java/8.0.13/mysql-connector-java-8.0.13-sources.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="jcalendar-1.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/MyPC/Downloads/jcalendar-tz-1.3.3-4.jar"/>
+	<classpathentry kind="lib" path="lib/jcalendar-1.4.jar" sourcepath="lib/jcalendar-1.4.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
