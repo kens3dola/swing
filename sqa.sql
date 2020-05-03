@@ -71,6 +71,7 @@ CREATE TABLE `item` (
   `id` int(11) NOT NULL,
   `name` enum('popcorn','redbull') NOT NULL,
   `quantity` int(11) NOT NULL,
+  `price` int(100) NOT NULL,
   `order_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -78,8 +79,8 @@ CREATE TABLE `item` (
 -- Dumping data for table `item`
 --
 
-INSERT INTO `item` (`id`, `name`, `quantity`, `order_id`) VALUES
-(1, 'popcorn', 2, 1);
+INSERT INTO `item` (`id`, `name`, `quantity`, `price`, `order_id`) VALUES
+(1, 'popcorn', 2, 5, 1);
 
 -- --------------------------------------------------------
 
