@@ -1,60 +1,69 @@
 package com.swing.model;
 
-public class Account {
+import java.io.Serializable;
+
+
+/**
+ * The persistent class for the account database table.
+ * 
+ */
+public class Account implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	private int id;
-	private String username;
+
+
 	private String password;
+
 	private String role;
-	
-	public Account(String username, String password, String role) {
-		super();
-		this.username = username;
-		this.password = password;
-		this.role = role;
+
+	private String username;
+
+
+	public Account() {
 	}
-	
+
+
 	public Account(int id, String username, String password, String role) {
 		super();
 		this.id = id;
-		this.username = username;
 		this.password = password;
 		this.role = role;
+		this.username = username;
 	}
 
-	public Account() {
-		// TODO Auto-generated constructor stub
-	}
+
 
 	public int getId() {
-		return id;
+		return this.id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getUsername() {
-		return username;
-	}
-	public void setUsername(String username) {
-		this.username = username;
-	}
+
 	public String getPassword() {
-		return password;
+		return this.password;
 	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
 	public String getRole() {
-		return role;
+		return this.role;
 	}
+
 	public void setRole(String role) {
 		this.role = role;
 	}
 
-	@Override
-	public String toString() {
-		return "User [id=" + id + ",  "+", username=" + username + ", password+"
-				+ password + ", role=" + role +"]";
+	public String getUsername() {
+		return this.username;
 	}
-	
-	
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 }

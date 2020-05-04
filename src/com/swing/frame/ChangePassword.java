@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.swing.dao.AccountDao;
+import com.swing.frame.admin.AdminHome;
 import com.swing.model.Account;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
@@ -52,7 +53,6 @@ public class ChangePassword extends JFrame {
 			try {
 				accountDao = new AccountDao();
 			} catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
@@ -87,6 +87,7 @@ public class ChangePassword extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					accountDao.changePassword(a, textField.getText());
 					dispose();
+					new AdminHome(a.getId());
 				}
 			});
 			submitBtn.setBounds(173, 213, 89, 23);

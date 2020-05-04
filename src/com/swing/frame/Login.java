@@ -43,6 +43,7 @@ public class Login extends JFrame {
 				try {
 					Login frame = new Login();
 					frame.setVisible(true);
+					frame.setLocationRelativeTo(null);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -111,7 +112,6 @@ public class Login extends JFrame {
 				}
 				
 				if(x != null) {
-					System.out.println(x.getRole());
 					if(x.getRole().equals("admin")){
 						dispose();
 						new AdminHome(x.getId()).setVisible(true);

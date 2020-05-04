@@ -40,15 +40,19 @@ public class AccountDao {
 		return u;
 	}
 
-	public void createAccount(Account a) throws SQLException {
-		String sql = "insert into account value(?,?,?,?,?,?,?)";
-		PreparedStatement st = connection.prepareStatement(sql);
-		st.setInt(1, a.getId());
-		st.setString(2, a.getUsername());
-		st.setString(3, a.getPassword());
-		st.setString(4, a.getRole());
-
-		st.executeUpdate();
+	public void createAccount(String name, String password, String role){
+		String sql = "insert into account(username, password, role) value(?,?,?)";
+		PreparedStatement st;
+		try {
+			st = connection.prepareStatement(sql);
+			st.setString(1, name);
+			st.setString(2, password);
+			st.setString(3, role);
+			st.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public Account validate(Account a) throws SQLException {
@@ -74,5 +78,42 @@ public class AccountDao {
 			e.printStackTrace();
 		}
 		return 0;
+	}
+	
+	public void update(Account acc) {
+		String sql = "update account set username=?, password=?, role='"+acc.getRole()+"' where id=?";
+		try {
+			PreparedStatement st = connection.prepareStatement(sql);
+			st.setString(1, acc.getUsername());
+			st.setString(2, acc.getPassword());
+			st.setInt(3, acc.getId());
+			st.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public ResultSet getList() {
+		String sql = "select * from Account";
+		try {
+			Statement st;
+			st = connection.createStatement();
+			return st.executeQuery(sql);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return null;
+	}
+
+	public void delete(int id) {
+		String sql = "delete from account where id = "+id;
+		try {
+			PreparedStatement st = connection.prepareStatement(sql);
+			st.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
