@@ -33,7 +33,6 @@ import com.swing.dao.ItemDao;
 import com.swing.dao.MovieDao;
 import com.swing.dao.ScheduleDao;
 import com.swing.dao.ShowtimeDao;
-import com.swing.frame.ChangePassword;
 import com.swing.frame.Login;
 import com.swing.model.Account;
 import com.swing.model.Movie;
@@ -47,6 +46,14 @@ import javax.swing.JRadioButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.border.EtchedBorder;
+import java.awt.Color;
+import java.awt.Insets;
+import javax.swing.border.LineBorder;
+import java.awt.Font;
+import java.awt.SystemColor;
+import javax.swing.ImageIcon;
+import javax.swing.border.MatteBorder;
 
 public class AdminHome extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -86,6 +93,10 @@ public class AdminHome extends JFrame {
 	 * @param id
 	 */
 	public AdminHome(int id) {
+		setResizable(false);
+		setBackground(Color.WHITE);
+		setTitle("Cinema");
+		setLocationRelativeTo(null);
 		movieDao = new MovieDao();
 		scheDao = new ScheduleDao();
 		showDao = new ShowtimeDao();
@@ -99,45 +110,63 @@ public class AdminHome extends JFrame {
 			e2.printStackTrace();
 		}
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 762, 583);
-		
+		setBounds(100, 100, 756, 576);
+
 		JMenuBar menuBar = new JMenuBar();
+		menuBar.setBorder(null);
+		menuBar.setBounds(new Rectangle(10, 0, 50, 50));
+		menuBar.setBackground(Color.WHITE);
+		menuBar.setBorderPainted(false);
 		setJMenuBar(menuBar);
-		
+
 		JMenu mnNewMenu = new JMenu("Option");
+		mnNewMenu.setMnemonic('O');
+		mnNewMenu.setOpaque(true);
+		mnNewMenu.setHorizontalAlignment(SwingConstants.RIGHT);
+		mnNewMenu.setBackground(Color.WHITE);
+		mnNewMenu.setBorder(null);
 		menuBar.add(mnNewMenu);
-		
-				JButton btnNewButton = new JButton("Change password");
-				mnNewMenu.add(btnNewButton);
-				btnNewButton.setHorizontalAlignment(SwingConstants.RIGHT);
-				
-						JButton logoutBtn = new JButton("Logout");
-						mnNewMenu.add(logoutBtn);
-						logoutBtn.setHorizontalAlignment(SwingConstants.RIGHT);
-						logoutBtn.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent e) {
-								dispose();
-								new Login().setVisible(true);
-							}
-						});
-				
-						btnNewButton.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent e) {
-								try {
-									dispose();
-									new ChangePassword(accountDao.getAccountById(id)).setVisible(true);
-								} catch (SQLException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								}
-							}
-						});
+
+		JButton btnNewButton = new JButton("Change password");
+		btnNewButton.setBackground(Color.WHITE);
+		mnNewMenu.add(btnNewButton);
+		btnNewButton.setHorizontalAlignment(SwingConstants.RIGHT);
+
+		JButton logoutBtn = new JButton("Logout");
+		logoutBtn.setBackground(Color.WHITE);
+		mnNewMenu.add(logoutBtn);
+		logoutBtn.setHorizontalAlignment(SwingConstants.RIGHT);
+		logoutBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				new Login().setVisible(true);
+			}
+		});
+
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String pass = JOptionPane.showInputDialog("Enter new password");
+				accountDao.changePassword(id, pass);
+				JOptionPane.showMessageDialog(null, "Password changed");
+			}
+		});
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setForeground(new Color(0, 0, 0));
+		contentPane.setOpaque(false);
+		contentPane.setBorder(null);
+		contentPane.setBackground(Color.WHITE);
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setRequestFocusEnabled(false);
+		tabbedPane.setFocusable(false);
+		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+		tabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		tabbedPane.setFocusTraversalKeysEnabled(false);
+		tabbedPane.setBorder(null);
+		tabbedPane.setForeground(new Color(0, 0, 0));
+		tabbedPane.setBackground(SystemColor.text);
 		tabbedPane.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				int i = tabbedPane.getSelectedIndex();
@@ -166,22 +195,60 @@ public class AdminHome extends JFrame {
 		// movie tab
 		movieTabInit(tabbedPane);
 
-		//user tab
+		// user tab
 		userTabInit(tabbedPane);
 	}
 
 	private void showTabInit(JTabbedPane tabbedPane) {
 		JDateChooser date = new JDateChooser();
+		date.getCalendarButton().setBackground(SystemColor.textHighlight);
 		JComboBox room = new JComboBox();
-		date.setBounds(93, 349, 176, 31);
+		room.setBackground(Color.WHITE);
+		room.setForeground(SystemColor.textHighlight);
+		date.setBounds(95, 319, 221, 31);
+		date.setBorder(new LineBorder(SystemColor.textHighlight));
 		JPanel panel1 = new JPanel();
+		panel1.setFocusTraversalKeysEnabled(false);
+		panel1.setDoubleBuffered(false);
+		panel1.setBorder(null);
+		panel1.setBackground(Color.WHITE);
 		panel1.add(date);
 		JList<Movie> movieList = new JList<Movie>();
+		movieList.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		movieList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		movieList.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		movieList.setForeground(SystemColor.textHighlight);
 		JList<Schedule> movieList2 = new JList<Schedule>();
+		movieList2.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		movieList2.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		movieList2.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		movieList2.setForeground(SystemColor.textHighlight);
 		tabbedPane.addTab("Manage shows", null, panel1, null);
+		show_table.getTableHeader().setBackground(Color.WHITE);
+		show_table.getTableHeader().setForeground(new Color(0, 0, 255));
+		show_table.getTableHeader().setFont(new Font("Tahoma", Font.PLAIN, 14));
+		show_table.setForeground(new Color(0, 0, 255));
+		show_table.setFillsViewportHeight(true);
+		show_table.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		show_table.setFocusable(false);
+		show_table.setFocusTraversalKeysEnabled(false);
+		show_table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		show_table.setRowMargin(0);
+		show_table.setShowVerticalLines(false);
+		show_table.setShowHorizontalLines(false);
+		show_table.setShowGrid(false);
+		show_table.setGridColor(Color.WHITE);
+		show_table.setBorder(null);
+		show_table.setBackground(Color.WHITE);
 
 		JScrollPane scroll1 = new JScrollPane(show_table);
-		scroll1.setBounds(279, 37, 452, 446);
+		scroll1.setAutoscrolls(true);
+		scroll1.setOpaque(true);
+		scroll1.setFocusable(false);
+		scroll1.setFocusTraversalKeysEnabled(false);
+		scroll1.setBorder(new LineBorder(Color.GRAY));
+		scroll1.setBackground(Color.WHITE);
+		scroll1.setBounds(326, 37, 405, 444);
 		panel1.add(scroll1);
 
 		panel1.setLayout(null);
@@ -189,14 +256,17 @@ public class AdminHome extends JFrame {
 		show_table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		show_table.setBounds(new Rectangle(10, 39, 721, 444));
 
-		JButton showNew = new JButton("Add new show");
+		JButton showNew = new JButton("ADD");
+		showNew.setBackground(SystemColor.textHighlight);
+		showNew.setForeground(Color.WHITE);
+		showNew.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		showNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Movie m = movieList.getSelectedValue();
 				Schedule s = movieList2.getSelectedValue();
 				Date d = date.getDate();
 				String r = String.valueOf(room.getSelectedItem());
-				if (m != null && s != null && d != null && r!=null) {
+				if (m != null && s != null && d != null && r != null) {
 					showDao.add(m.getId(), s.getId(), d, r);
 					TableModel model = com.swing.config.DbUtils.resultSetToTableModel(showDao.getAllShowtime());
 					show_table.setModel(model);
@@ -205,10 +275,18 @@ public class AdminHome extends JFrame {
 				}
 			}
 		});
-		showNew.setBounds(93, 427, 176, 31);
+		showNew.setBounds(95, 428, 111, 31);
 		panel1.add(showNew);
 
 		JButton btnNewButton_4 = new JButton("Delete");
+		btnNewButton_4.setFocusTraversalKeysEnabled(false);
+		btnNewButton_4.setFocusPainted(false);
+		btnNewButton_4.setBorder(new LineBorder(new Color(64, 64, 64), 0, true));
+		btnNewButton_4.setBackground(SystemColor.text);
+		btnNewButton_4.setForeground(Color.DARK_GRAY);
+		btnNewButton_4.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnNewButton_4.setHorizontalAlignment(SwingConstants.LEFT);
+		btnNewButton_4.setIcon(new ImageIcon(AdminHome.class.getResource("/design/icons8_trash_23px.png")));
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int row = show_table.getSelectedRow();
@@ -220,7 +298,7 @@ public class AdminHome extends JFrame {
 			}
 		});
 		btnNewButton_4.setName("showDelete");
-		btnNewButton_4.setBounds(642, 11, 89, 23);
+		btnNewButton_4.setBounds(645, 0, 86, 34);
 		panel1.add(btnNewButton_4);
 
 		movieList.setBounds(87, 156, 182, 36);
@@ -230,7 +308,8 @@ public class AdminHome extends JFrame {
 		model.addAll(l);
 		movieList.setModel(model);
 		JScrollPane scrollPane = new JScrollPane(movieList);
-		scrollPane.setBounds(93, 61, 176, 130);
+		scrollPane.setBorder(new LineBorder(SystemColor.textHighlight));
+		scrollPane.setBounds(95, 125, 221, 86);
 		panel1.add(scrollPane);
 
 		movieList.setBounds(87, 156, 182, 36);
@@ -240,42 +319,81 @@ public class AdminHome extends JFrame {
 		model2.addAll(l2);
 		movieList2.setModel(model2);
 		JScrollPane scrollPane_1 = new JScrollPane(movieList2);
-		scrollPane_1.setBounds(93, 202, 176, 130);
+		scrollPane_1.setBorder(new LineBorder(SystemColor.textHighlight));
+		scrollPane_1.setBounds(95, 222, 221, 86);
 		panel1.add(scrollPane_1);
 
 		JLabel lblNewLabel = new JLabel("Movie");
+		lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
+		lblNewLabel.setForeground(SystemColor.textHighlight);
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(10, 63, 73, 130);
+		lblNewLabel.setBounds(10, 125, 75, 86);
 		panel1.add(lblNewLabel);
 
 		JLabel lblSchedule = new JLabel("Schedule");
+		lblSchedule.setVerticalAlignment(SwingConstants.TOP);
+		lblSchedule.setForeground(SystemColor.textHighlight);
+		lblSchedule.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblSchedule.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSchedule.setBounds(10, 202, 73, 130);
+		lblSchedule.setBounds(10, 221, 75, 86);
 		panel1.add(lblSchedule);
 
 		JLabel lblNewLabel_1 = new JLabel("Date");
+		lblNewLabel_1.setVerticalAlignment(SwingConstants.TOP);
+		lblNewLabel_1.setForeground(SystemColor.textHighlight);
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setBounds(10, 349, 73, 31);
+		lblNewLabel_1.setBounds(10, 318, 75, 31);
 		panel1.add(lblNewLabel_1);
-		
+
 		JLabel lblNewLabel_9 = new JLabel("Room");
-		lblNewLabel_9.setBounds(20, 391, 46, 14);
+		lblNewLabel_9.setVerticalAlignment(SwingConstants.TOP);
+		lblNewLabel_9.setForeground(SystemColor.textHighlight);
+		lblNewLabel_9.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_9.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_9.setBounds(10, 360, 75, 31);
 		panel1.add(lblNewLabel_9);
-		
-		room.setModel(new DefaultComboBoxModel(new String[] {"A", "B", "C", "D"}));
-		room.setBounds(93, 391, 176, 22);
+
+		room.setModel(new DefaultComboBoxModel(new String[] { "A", "B", "C", "D" }));
+		room.setBounds(95, 361, 221, 31);
 		panel1.add(room);
+		
+		JLabel lblNewLabel_11 = new JLabel("Add new show");
+		lblNewLabel_11.setForeground(SystemColor.textHighlight);
+		lblNewLabel_11.setIcon(new ImageIcon(AdminHome.class.getResource("/design/icons8_tv_show_50px.png")));
+		lblNewLabel_11.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_11.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNewLabel_11.setBounds(10, 20, 306, 94);
+		panel1.add(lblNewLabel_11);
 	}
 
 	private void movieTabInit(JTabbedPane tabbedPane) {
 		JTextField name = new JTextField();
+		name.setBorder(new MatteBorder(0, 0, 1, 0, (Color) SystemColor.textHighlight));
+		name.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		JTextField price = new JTextField();
+		price.setBorder(new MatteBorder(0, 0, 1, 0, (Color) SystemColor.textHighlight));
+		price.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		JTextField image = new JTextField();
+		image.setBorder(new MatteBorder(0, 0, 1, 0, (Color) SystemColor.textHighlight));
+		image.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		JPanel panel1 = new JPanel();
+		panel1.setBackground(Color.WHITE);
+		panel1.setBorder(null);
 		JLabel movie_id = new JLabel("");
 		tabbedPane.addTab("Manage movies", null, panel1, null);
-
+		movie_table.setForeground(SystemColor.textHighlight);
+		movie_table.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		movie_table.setGridColor(SystemColor.text);
+		movie_table.setFillsViewportHeight(true);
+		movie_table.setBackground(SystemColor.text);
+		movie_table.getTableHeader().setBackground(Color.WHITE);
+		movie_table.getTableHeader().setFont(new Font("Tahoma", Font.PLAIN, 14));
+		movie_table.getTableHeader().setForeground(SystemColor.textHighlight);
 		JScrollPane scroll1 = new JScrollPane(movie_table);
+		scroll1.setOpaque(false);
+		scroll1.setBackground(SystemColor.text);
 		scroll1.setBounds(303, 38, 428, 445);
 		panel1.add(scroll1);
 
@@ -284,7 +402,10 @@ public class AdminHome extends JFrame {
 		movie_table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		movie_table.setBounds(new Rectangle(10, 39, 721, 444));
 
-		JButton addMovie = new JButton("Add new movie");
+		JButton addMovie = new JButton("ADD");
+		addMovie.setForeground(SystemColor.text);
+		addMovie.setBackground(SystemColor.textHighlight);
+		addMovie.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		addMovie.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (addMovie.getText().equals("Update")) {
@@ -310,10 +431,17 @@ public class AdminHome extends JFrame {
 
 			}
 		});
-		addMovie.setBounds(100, 446, 131, 23);
+		addMovie.setBounds(100, 438, 131, 31);
 		panel1.add(addMovie);
 
 		JButton btnNewButton_1 = new JButton("Update");
+		btnNewButton_1.setBorder(null);
+		btnNewButton_1.setFocusPainted(false);
+		btnNewButton_1.setFocusTraversalKeysEnabled(false);
+		btnNewButton_1.setBackground(SystemColor.text);
+		btnNewButton_1.setHorizontalAlignment(SwingConstants.LEFT);
+		btnNewButton_1.setIcon(new ImageIcon(AdminHome.class.getResource("/design/icons8_edit_22px.png")));
+		btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int row = movie_table.getSelectedRow();
@@ -327,10 +455,17 @@ public class AdminHome extends JFrame {
 			}
 		});
 		btnNewButton_1.setName("showUpdate");
-		btnNewButton_1.setBounds(507, 11, 89, 23);
+		btnNewButton_1.setBounds(534, 0, 94, 34);
 		panel1.add(btnNewButton_1);
 
 		JButton btnNewButton_4 = new JButton("Delete");
+		btnNewButton_4.setBorder(null);
+		btnNewButton_4.setFocusTraversalKeysEnabled(false);
+		btnNewButton_4.setFocusPainted(false);
+		btnNewButton_4.setBackground(SystemColor.text);
+		btnNewButton_4.setHorizontalAlignment(SwingConstants.LEFT);
+		btnNewButton_4.setIcon(new ImageIcon(AdminHome.class.getResource("/design/icons8_trash_23px.png")));
+		btnNewButton_4.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (movie_table.getSelectedRow() != -1) {
@@ -342,34 +477,47 @@ public class AdminHome extends JFrame {
 			}
 		});
 		btnNewButton_4.setName("showDelete");
-		btnNewButton_4.setBounds(642, 11, 89, 23);
+		btnNewButton_4.setBounds(637, 0, 94, 34);
 		panel1.add(btnNewButton_4);
 
 		JLabel lblNewLabel_2 = new JLabel("Name");
-		lblNewLabel_2.setBounds(10, 89, 46, 14);
+		lblNewLabel_2.setForeground(SystemColor.textHighlight);
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_2.setBounds(10, 140, 94, 28);
 		panel1.add(lblNewLabel_2);
 
 		JLabel lblNewLabel_3 = new JLabel("Image");
-		lblNewLabel_3.setBounds(10, 192, 46, 14);
+		lblNewLabel_3.setForeground(SystemColor.textHighlight);
+		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_3.setBounds(10, 243, 94, 28);
 		panel1.add(lblNewLabel_3);
 
 		JLabel lblNewLabel_4 = new JLabel("Price");
-		lblNewLabel_4.setBounds(10, 294, 46, 14);
+		lblNewLabel_4.setForeground(SystemColor.textHighlight);
+		lblNewLabel_4.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_4.setBounds(10, 345, 94, 28);
 		panel1.add(lblNewLabel_4);
 
-		name.setBounds(114, 86, 86, 20);
+		name.setBounds(114, 140, 179, 31);
 		panel1.add(name);
 		name.setColumns(10);
 
-		price.setBounds(114, 291, 86, 20);
+		price.setBounds(114, 345, 179, 31);
 		panel1.add(price);
 		price.setColumns(10);
 
-		image.setBounds(114, 189, 86, 20);
+		image.setBounds(114, 243, 142, 31);
 		panel1.add(image);
 		image.setColumns(10);
 
-		JButton btnNewButton_2 = new JButton("Browse");
+		JButton btnNewButton_2 = new JButton("");
+		btnNewButton_2.setBorder(null);
+		btnNewButton_2.setFocusPainted(false);
+		btnNewButton_2.setFocusable(false);
+		btnNewButton_2.setFocusTraversalKeysEnabled(false);
+		btnNewButton_2.setBackground(Color.WHITE);
+		btnNewButton_2.setIcon(new ImageIcon(AdminHome.class.getResource("/design/icons8_plus_math_23px.png")));
+		btnNewButton_2.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Filechooser fc = new Filechooser();
@@ -380,20 +528,44 @@ public class AdminHome extends JFrame {
 				image.setText(imgName);
 			}
 		});
-		btnNewButton_2.setBounds(204, 188, 27, 23);
+		btnNewButton_2.setBounds(266, 243, 27, 33);
 		panel1.add(btnNewButton_2);
 
 		movie_id.setBounds(10, 39, 46, 14);
 		panel1.add(movie_id);
+		
+		JLabel lblNewLabel_10 = new JLabel("Add new movie");
+		lblNewLabel_10.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_10.setForeground(SystemColor.textHighlight);
+		lblNewLabel_10.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNewLabel_10.setIcon(new ImageIcon(AdminHome.class.getResource("/design/icons8_clapperboard_50px.png")));
+		lblNewLabel_10.setBounds(31, 39, 262, 95);
+		panel1.add(lblNewLabel_10);
 	}
 
 	private void userTabInit(JTabbedPane tabbedPane) {
 		JPanel panel1 = new JPanel();
+		panel1.setBackground(Color.WHITE);
+		panel1.setBorder(null);
 		JLabel account_id = new JLabel("");
 		JRadioButton admin = new JRadioButton("admin");
+		admin.setForeground(SystemColor.textHighlight);
+		admin.setBackground(SystemColor.text);
+		admin.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		JRadioButton staff = new JRadioButton("staff");
+		staff.setForeground(SystemColor.textHighlight);
+		staff.setBackground(SystemColor.text);
+		staff.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		tabbedPane.addTab("Manage users", null, panel1, null);
-
+		user_table.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		user_table.setForeground(SystemColor.textHighlight);
+		user_table.setGridColor(SystemColor.text);
+		user_table.setBackground(SystemColor.text);
+		user_table.setFillsViewportHeight(true);
+		user_table.getTableHeader().setBackground(Color.white);
+		user_table.getTableHeader().setForeground(SystemColor.textHighlight);
+		user_table.getTableHeader().setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
 		JScrollPane scroll1 = new JScrollPane(user_table);
 		scroll1.setBounds(315, 45, 416, 446);
 		panel1.add(scroll1);
@@ -403,7 +575,10 @@ public class AdminHome extends JFrame {
 		user_table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		user_table.setBounds(new Rectangle(10, 39, 721, 444));
 
-		JButton showNew = new JButton("Add new account");
+		JButton showNew = new JButton("ADD");
+		showNew.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		showNew.setBackground(SystemColor.textHighlight);
+		showNew.setForeground(Color.WHITE);
 		showNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (showNew.getText().equals("Update")) {
@@ -423,10 +598,16 @@ public class AdminHome extends JFrame {
 				user_table.setModel(model2);
 			}
 		});
-		showNew.setBounds(77, 453, 157, 30);
+		showNew.setBounds(91, 410, 115, 30);
 		panel1.add(showNew);
 
 		JButton btnNewButton_1 = new JButton("Update");
+		btnNewButton_1.setIcon(new ImageIcon(AdminHome.class.getResource("/design/icons8_edit_22px.png")));
+		btnNewButton_1.setFocusTraversalKeysEnabled(false);
+		btnNewButton_1.setFocusPainted(false);
+		btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnNewButton_1.setBorder(null);
+		btnNewButton_1.setBackground(SystemColor.text);
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int row = user_table.getSelectedRow();
@@ -446,10 +627,16 @@ public class AdminHome extends JFrame {
 			}
 		});
 		btnNewButton_1.setName("showUpdate");
-		btnNewButton_1.setBounds(507, 11, 89, 23);
+		btnNewButton_1.setBounds(543, 0, 89, 34);
 		panel1.add(btnNewButton_1);
 
 		JButton btnNewButton_4 = new JButton("Delete");
+		btnNewButton_4.setIcon(new ImageIcon(AdminHome.class.getResource("/design/icons8_trash_23px.png")));
+		btnNewButton_4.setFocusTraversalKeysEnabled(false);
+		btnNewButton_4.setFocusPainted(false);
+		btnNewButton_4.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnNewButton_4.setBorder(null);
+		btnNewButton_4.setBackground(SystemColor.text);
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int row = user_table.getSelectedRow();
@@ -461,40 +648,58 @@ public class AdminHome extends JFrame {
 			}
 		});
 		btnNewButton_4.setName("showDelete");
-		btnNewButton_4.setBounds(642, 11, 89, 23);
+		btnNewButton_4.setBounds(642, 0, 89, 34);
 		panel1.add(btnNewButton_4);
 
 		JLabel lblNewLabel_6 = new JLabel("Username");
-		lblNewLabel_6.setBounds(10, 95, 71, 23);
+		lblNewLabel_6.setForeground(SystemColor.textHighlight);
+		lblNewLabel_6.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_6.setBounds(10, 149, 71, 37);
 		panel1.add(lblNewLabel_6);
 
 		JLabel lblNewLabel_7 = new JLabel("Password");
-		lblNewLabel_7.setBounds(10, 202, 71, 23);
+		lblNewLabel_7.setForeground(SystemColor.textHighlight);
+		lblNewLabel_7.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_7.setBounds(10, 235, 71, 37);
 		panel1.add(lblNewLabel_7);
 
 		JLabel lblNewLabel_8 = new JLabel("Role");
-		lblNewLabel_8.setBounds(10, 291, 71, 23);
+		lblNewLabel_8.setForeground(SystemColor.textHighlight);
+		lblNewLabel_8.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_8.setBounds(10, 315, 71, 37);
 		panel1.add(lblNewLabel_8);
 
 		username = new JTextField();
-		username.setBounds(91, 95, 214, 23);
+		username.setBorder(new MatteBorder(0, 0, 1, 0, (Color) SystemColor.textHighlight));
+		username.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		username.setBounds(91, 152, 214, 34);
 		panel1.add(username);
 		username.setColumns(10);
 
 		password = new JTextField();
+		password.setBorder(new MatteBorder(0, 0, 1, 0, (Color) SystemColor.textHighlight));
+		password.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		password.setColumns(10);
-		password.setBounds(91, 202, 214, 23);
+		password.setBounds(91, 235, 214, 37);
 		panel1.add(password);
 
 		roleBtnGroup.add(admin);
-		admin.setBounds(87, 291, 110, 23);
+		admin.setBounds(91, 315, 106, 37);
 		panel1.add(admin);
 
 		roleBtnGroup.add(staff);
-		staff.setBounds(202, 291, 107, 23);
+		staff.setBounds(202, 315, 107, 37);
 		panel1.add(staff);
 
 		account_id.setBounds(10, 37, 46, 14);
 		panel1.add(account_id);
+		
+		JLabel lblNewLabel_12 = new JLabel("Add new account");
+		lblNewLabel_12.setForeground(SystemColor.textHighlight);
+		lblNewLabel_12.setIcon(new ImageIcon(AdminHome.class.getResource("/design/icons8_user_groups_50px.png")));
+		lblNewLabel_12.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_12.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNewLabel_12.setBounds(10, 15, 299, 123);
+		panel1.add(lblNewLabel_12);
 	}
 }

@@ -1,6 +1,7 @@
 package com.swing.dao;
 
 import com.swing.config.JdbcConnection;
+import com.swing.model.HistoryOrderModel;
 import com.swing.model.Movie;
 
 import java.sql.Connection;
@@ -143,5 +144,26 @@ public class MovieDao {
 		}
 		
 		
+	}
+
+	public void getOrderMovie(HistoryOrderModel ho, int id) {
+		String sql = "select * from movie where id=" + id;
+		try {
+			Connection con = null;
+			try {
+				con = JdbcConnection.getConnection();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			PreparedStatement st = con.prepareStatement(sql);
+			ResultSet rs = st.executeQuery();
+			while(rs.next()) {
+				ho.setMovie(rs.getString(2));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

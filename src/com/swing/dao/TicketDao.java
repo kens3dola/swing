@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.swing.config.JdbcConnection;
+import com.swing.model.HistoryOrderModel;
 import com.swing.model.Ticket;
 
 public class TicketDao {
@@ -89,6 +90,23 @@ public class TicketDao {
 			st.setInt(3, tic.getSeatId());
 			st.executeUpdate();
 		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void getOrderTicket(HistoryOrderModel ho) {
+		String sql = "select * from ticket where order_id=" + ho.getOrder_id();
+		try {
+			PreparedStatement st = connection.prepareStatement(sql);
+			ResultSet rs = st.executeQuery();
+			while(rs.next()) {
+				String seats = (ho.getSeats()==null)?"":ho.getSeats();
+				seats +=(" "+rs.getInt(4));
+				ho.setSeats(seats);
+				new ShowtimeDao().getOrderShowtime(ho, rs.getInt(3));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

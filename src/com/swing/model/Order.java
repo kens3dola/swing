@@ -18,6 +18,8 @@ public class Order implements Serializable {
 	private int staffId;
 
 	private String customer;
+	
+	private int price;
 
 	public Order() {
 	}
@@ -61,5 +63,12 @@ public class Order implements Serializable {
 	public void setCustomer(String customer) {
 		this.customer = customer;
 	}
-
+	
+	public void setPrice(int price) {
+		this.price = price;
+	}
+	
+	public int getPrice() {
+		return this.price;
+	}
 }

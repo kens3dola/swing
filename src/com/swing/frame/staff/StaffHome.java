@@ -16,6 +16,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -37,13 +38,16 @@ import com.swing.dao.ScheduleDao;
 import com.swing.dao.ShowtimeDao;
 import com.swing.dao.StaffDao;
 import com.swing.dao.TicketDao;
-import com.swing.frame.ChangePassword;
+import com.swing.frame.HistoryOrder;
 import com.swing.frame.Login;
 import com.swing.model.Movie;
-import com.swing.model.Order;
 import com.swing.model.Showtime;
 import com.swing.model.Ticket;
 import com.toedter.calendar.JDateChooser;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
+import java.awt.Font;
+import java.awt.SystemColor;
 
 public class StaffHome extends JFrame {
 
@@ -70,7 +74,7 @@ public class StaffHome extends JFrame {
 
 	JLabel image = new JLabel("");
 	JButton first = new JButton("First");
-	JButton prev = new JButton("Previous");
+	JButton prev = new JButton("Prev");
 	JButton next = new JButton("Next");
 	JButton last = new JButton("Last");
 	JButton movieNextBtn = new JButton("Choose");
@@ -86,6 +90,7 @@ public class StaffHome extends JFrame {
 	JLabel seatChosen = new JLabel("");
 	JButton seatNextBtn = new JButton("Next");
 	private final JLabel lblNewLabel_1 = new JLabel("Seat chosen:");
+	JLabel seat_price = new JLabel("0 $");
 
 	JLabel popcorn = new JLabel("");
 	JLabel coca = new JLabel("");
@@ -94,6 +99,12 @@ public class StaffHome extends JFrame {
 	JLabel lblNewLabel_2_1 = new JLabel("Quantity:");
 	JSpinner coc = new JSpinner();
 	JButton done = new JButton("Done");
+	private final JButton btnNewButton_2 = new JButton("History order");
+	private final JLabel lblNewLabel_3 = new JLabel("Price: ");
+	private final JLabel item_price = new JLabel("0 $");
+	private final JLabel lblNewLabel_4 = new JLabel("Popcorn : 1$/1");
+	private final JLabel lblNewLabel_4_1 = new JLabel("Coca : 1$/1");
+	private final JLabel tvImg = new JLabel("");
 
 	/**
 	 * Launch the application.
@@ -102,7 +113,7 @@ public class StaffHome extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					StaffHome frame = new StaffHome(0);
+					StaffHome frame = new StaffHome(2);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -115,6 +126,9 @@ public class StaffHome extends JFrame {
 	 * Create the frame.
 	 */
 	public StaffHome(int id) {
+		setTitle("Cinema");
+		setResizable(false);
+		setLocationRelativeTo(null);
 		try {
 			accountDao = new AccountDao();
 			movieDao = new MovieDao();
@@ -146,16 +160,40 @@ public class StaffHome extends JFrame {
 		setJMenuBar(menuBar);
 
 		JMenu mnNewMenu = new JMenu("Option");
+		mnNewMenu.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 		mnNewMenu.setBackground(Color.WHITE);
 		mnNewMenu.setHorizontalAlignment(SwingConstants.RIGHT);
 		mnNewMenu.setForeground(Color.BLACK);
 		menuBar.add(mnNewMenu);
 
+		JButton btnNewButton_1 = new JButton("Change profile");
+		btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnNewButton_1.setBackground(Color.WHITE);
+		btnNewButton_1.setForeground(Color.BLACK);
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				new ChangeProfile(account_id).setVisible(true);
+				;
+			}
+		});
+		btnNewButton_2.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new HistoryOrder().setVisible(true);
+			}
+		});
+
+		mnNewMenu.add(btnNewButton_2);
+		mnNewMenu.add(btnNewButton_1);
+
 		JButton btnNewButton = new JButton("Change password");
+		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnNewButton.setBackground(Color.WHITE);
 		mnNewMenu.add(btnNewButton);
 
 		JButton logoutBtn = new JButton("Logout");
+		logoutBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		logoutBtn.setBackground(Color.WHITE);
 		mnNewMenu.add(logoutBtn);
 		logoutBtn.addActionListener(new ActionListener() {
@@ -166,14 +204,9 @@ public class StaffHome extends JFrame {
 		});
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dispose();
-				try {
-					new ChangePassword(accountDao.getAccountById(id)).setVisible(true);
-					;
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				String pass = JOptionPane.showInputDialog("Enter new password");
+				accountDao.changePassword(account_id, pass);
+				JOptionPane.showMessageDialog(null, "Password changed!");
 			}
 		});
 
@@ -186,22 +219,58 @@ public class StaffHome extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		moviePane.setBackground(SystemColor.text);
 
 		// moviePane
 		contentPane.add(moviePane);
 		moviePaneInit(moviePane);
+//		seatPaneInit(seatPane, null);
 
 		contentPane.add(seatPane);
 		seatPane.setLayout(null);
+		seatChosen.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		seatChosen.setForeground(SystemColor.textHighlight);
+		seatChosen.setBackground(SystemColor.textHighlightText);
 
-		seatChosen.setBounds(130, 480, 400, 40);
+		seatChosen.setBounds(100, 480, 374, 40);
 		seatPane.add(seatChosen);
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_1.setForeground(SystemColor.textHighlight);
+		lblNewLabel_1.setBackground(SystemColor.textHighlightText);
 
-		lblNewLabel_1.setBounds(10, 480, 120, 40);
+		lblNewLabel_1.setBounds(10, 480, 80, 40);
 
 		seatPane.add(lblNewLabel_1);
+		seat_price.setForeground(SystemColor.textHighlight);
+
+		seat_price.setBounds(484, 480, 54, 40);
+		seatPane.add(seat_price);
+		tvImg.setBounds(10, 11, 774, 266);
+		
+		seatPane.add(tvImg);
+		itemPane.setBackground(SystemColor.text);
 		// seatPane
 		contentPane.add(itemPane);
+		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_3.setForeground(SystemColor.textHighlight);
+		lblNewLabel_3.setBounds(341, 436, 46, 31);
+
+		itemPane.add(lblNewLabel_3);
+		item_price.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		item_price.setForeground(SystemColor.textHighlight);
+		item_price.setBounds(397, 436, 91, 31);
+
+		itemPane.add(item_price);
+		lblNewLabel_4.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_4.setForeground(SystemColor.textHighlight);
+		lblNewLabel_4.setBounds(20, 361, 111, 42);
+
+		itemPane.add(lblNewLabel_4);
+		lblNewLabel_4_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_4_1.setForeground(SystemColor.textHighlight);
+		lblNewLabel_4_1.setBounds(413, 361, 100, 42);
+
+		itemPane.add(lblNewLabel_4_1);
 
 	}
 
@@ -209,7 +278,11 @@ public class StaffHome extends JFrame {
 		Movie m = list.get(current);
 		movie_id.setHorizontalAlignment(SwingConstants.CENTER);
 		movie_id.setText("id:" + m.getId());
+		name.setForeground(SystemColor.textHighlight);
+		name.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		name.setText("Name: " + m.getName());
+		price.setForeground(SystemColor.textHighlight);
+		price.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		price.setText("Price: " + m.getPrice());
 		image.setIcon(createImgIcon(m.getImage()));
 	}
@@ -241,19 +314,30 @@ public class StaffHome extends JFrame {
 				}
 			}
 		});
+		lblNewLabel.setForeground(SystemColor.textHighlight);
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(234, 459, 70, 31);
+		lblNewLabel.setBounds(259, 455, 46, 31);
 
 		moviePane.add(lblNewLabel);
-		date.setBounds(314, 459, 159, 31);
+		date.setBounds(314, 455, 159, 31);
 		moviePane.add(date);
-		shows.setBounds(489, 459, 181, 31);
+		shows.setBackground(SystemColor.textHighlightText);
+		shows.setFocusTraversalKeysEnabled(false);
+		shows.setForeground(new Color(0, 0, 0));
+		shows.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		shows.setBounds(490, 455, 181, 31);
 		moviePane.add(shows);
 		moviePane.setBounds(0, 0, 784, 539);
 		moviePane.setLayout(null);
 		image.setBounds(56, 11, 700, 437);
 		moviePane.add(image);
+		first.setBorder(null);
+		first.setIcon(new ImageIcon(StaffHome.class.getResource("/design/icons8_first_22px.png")));
+		first.setBackground(SystemColor.textHighlightText);
+		first.setForeground(SystemColor.textInactiveText);
+		first.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		first.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				current = 0;
@@ -261,8 +345,13 @@ public class StaffHome extends JFrame {
 			}
 		});
 
-		first.setBounds(36, 505, 89, 23);
+		first.setBounds(36, 497, 89, 31);
 		moviePane.add(first);
+		prev.setBorder(null);
+		prev.setIcon(new ImageIcon(StaffHome.class.getResource("/design/icons8_previous_22px_1.png")));
+		prev.setBackground(SystemColor.textHighlightText);
+		prev.setForeground(SystemColor.textInactiveText);
+		prev.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
 		prev.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -272,8 +361,13 @@ public class StaffHome extends JFrame {
 				}
 			}
 		});
-		prev.setBounds(135, 505, 89, 23);
+		prev.setBounds(135, 497, 89, 31);
 		moviePane.add(prev);
+		next.setBorder(null);
+		next.setIcon(new ImageIcon(StaffHome.class.getResource("/design/icons8_next_22px.png")));
+		next.setBackground(SystemColor.textHighlightText);
+		next.setForeground(SystemColor.textInactiveText);
+		next.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		next.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (current < size - 1) {
@@ -283,8 +377,13 @@ public class StaffHome extends JFrame {
 			}
 		});
 
-		next.setBounds(234, 505, 89, 23);
+		next.setBounds(235, 497, 89, 31);
 		moviePane.add(next);
+		last.setBorder(null);
+		last.setIcon(new ImageIcon(StaffHome.class.getResource("/design/icons8_last_22px.png")));
+		last.setBackground(SystemColor.textHighlightText);
+		last.setForeground(SystemColor.textInactiveText);
+		last.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		last.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				current = size - 1;
@@ -292,11 +391,16 @@ public class StaffHome extends JFrame {
 			}
 		});
 
-		last.setBounds(333, 505, 89, 23);
+		last.setBounds(334, 497, 89, 31);
 		moviePane.add(last);
+		movieNextBtn.setBorder(null);
+		movieNextBtn.setIcon(new ImageIcon(StaffHome.class.getResource("/design/icons8_next_22px_2.png")));
+		movieNextBtn.setBackground(SystemColor.text);
+		movieNextBtn.setForeground(SystemColor.textHighlightText);
+		movieNextBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		movieNextBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (shows.getSelectedItem()!=null) {
+				if (shows.getSelectedItem() != null) {
 					Showtime s = (Showtime) shows.getSelectedItem();
 					changeLayout(seatPane);
 					// showPane
@@ -305,13 +409,13 @@ public class StaffHome extends JFrame {
 			}
 		});
 
-		movieNextBtn.setBounds(685, 505, 89, 23);
+		movieNextBtn.setBounds(670, 497, 105, 31);
 		moviePane.add(movieNextBtn);
 
-		name.setBounds(35, 455, 231, 39);
+		name.setBounds(36, 455, 222, 31);
 		moviePane.add(name);
 
-		price.setBounds(680, 455, 70, 39);
+		price.setBounds(681, 455, 70, 31);
 		moviePane.add(price);
 
 		movie_id.setBounds(0, 11, 46, 433);
@@ -319,6 +423,9 @@ public class StaffHome extends JFrame {
 	}
 
 	private void seatPaneInit(JPanel seatPane, Showtime show) {
+		seatNextBtn.setBackground(SystemColor.textHighlightText);
+		seatNextBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		seatNextBtn.setIcon(new ImageIcon(StaffHome.class.getResource("/design/icons8_next_22px_2.png")));
 
 		seatNextBtn.setBounds(650, 480, 100, 40);
 		seatPane.add(seatNextBtn);
@@ -386,29 +493,62 @@ public class StaffHome extends JFrame {
 				.getScaledInstance(382, 339, Image.SCALE_SMOOTH)));
 		coca.setBounds(392, 11, 382, 339);
 		itemPane.add(coca);
+		pop.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				int price = Integer.parseInt(String.valueOf(pop.getValue()));
+				int price2 = Integer.parseInt(String.valueOf(coc.getValue()));
+				item_price.setText((price + price2) + " $");
+			}
+		});
 
 		pop.setModel(new SpinnerNumberModel(0, 0, null, 1));
-		pop.setBounds(167, 361, 52, 42);
+		pop.setBounds(260, 361, 52, 42);
 		itemPane.add(pop);
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_2.setForeground(SystemColor.textHighlight);
 
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_2.setBounds(63, 361, 80, 36);
+		lblNewLabel_2.setBounds(155, 364, 80, 39);
 		itemPane.add(lblNewLabel_2);
+		lblNewLabel_2_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_2_1.setForeground(SystemColor.textHighlight);
 
 		lblNewLabel_2_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_2_1.setBounds(515, 361, 80, 36);
+		lblNewLabel_2_1.setBounds(515, 361, 80, 42);
 		itemPane.add(lblNewLabel_2_1);
+		coc.setForeground(SystemColor.text);
 
 		coc.setModel(new SpinnerNumberModel(0, 0, null, 1));
 		coc.setBounds(616, 361, 52, 42);
 		itemPane.add(coc);
+		coc.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				int price = Integer.parseInt(String.valueOf(pop.getValue()));
+				int price2 = Integer.parseInt(String.valueOf(coc.getValue()));
+				item_price.setText((price + price2) + " $");
+			}
+		});
+		done.setBackground(SystemColor.textHighlight);
+		done.setForeground(SystemColor.text);
+		done.setFont(new Font("Tahoma", Font.PLAIN, 16));
+
 		done.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String name = JOptionPane.showInputDialog(null, "Enter customer name");
 				if (!name.isBlank() || !name.isEmpty()) {
 					int od = orderDao.add(staff_id, name, new Date());
-
+					int order_price = 0;
 					for (Ticket tic : ticL) {
+						if (tic.getSeatId() < 10) {
+							tic.setPrice(3);
+							order_price += 3;
+						} else if (tic.getSeatId() < 19) {
+							tic.setPrice(2);
+							order_price += 2;
+						} else {
+							tic.setPrice(1);
+							order_price += 1;
+						}
 						tic.setOrderId(od);
 						ticDao.add(tic);
 					}
@@ -419,10 +559,16 @@ public class StaffHome extends JFrame {
 						itemDao.add("popcorn", popQuantity, od);
 					if (cocQuantity > 0)
 						itemDao.add("coca", cocQuantity, od);
-
-					JOptionPane.showConfirmDialog(null, "Successfully ordered!");
-					dispose();
-					new StaffHome(account_id).setVisible(true);
+					order_price += (popQuantity + cocQuantity);
+					orderDao.setPrice(od, order_price);
+					int choice = JOptionPane.showConfirmDialog(null,
+							"Successfully ordered. Do you want to make a new order?");
+					if (choice == JOptionPane.YES_OPTION) {
+						dispose();
+						new StaffHome(account_id).setVisible(true);
+					} else {
+						new Login().setVisible(true);
+					}
 				}
 			}
 		});
@@ -433,15 +579,35 @@ public class StaffHome extends JFrame {
 	private JToggleButton addToggleButton(String name, boolean isAvailable, int x, int y, JLabel lbl) {
 		JToggleButton btn = new JToggleButton((x + 1 + 9 * y) + "-" + name);
 		btn.setBounds(60 + x * 75, 280 + y * 55, 65, 50);
+		btn.setBackground(Color.white);
+		btn.setHorizontalAlignment(SwingConstants.LEFT);
 		if (!isAvailable)
 			btn.setEnabled(false);
 		btn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (btn.isSelected()) {
+					int price = Integer.parseInt(seat_price.getText().substring(0, 1));
+					if ((x + 1 + 9 * y) < 10) {
+						price += 3;
+					} else if ((x + 1 + 9 * y) < 19) {
+						price += 2;
+					} else {
+						price++;
+					}
+					seat_price.setText(price + " $");
 					String text = lbl.getText();
 					lbl.setText(text + " " + (x + 1 + 9 * y));
 				} else {
+					int price = Integer.parseInt(seat_price.getText().substring(0, 1));
+					if ((x + 1 + 9 * y) < 10) {
+						price -= 3;
+					} else if ((x + 1 + 9 * y) < 19) {
+						price -= 2;
+					} else {
+						price--;
+					}
+					seat_price.setText(price + " $");
 					String text = lbl.getText();
 					String n = " " + (x + 1 + 9 * y);
 					lbl.setText(text.replace(n, ""));

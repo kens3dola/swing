@@ -17,6 +17,8 @@ public class Ticket implements Serializable {
 	private int seatId;
 
 	private int showtimeId;
+	
+	private int price;
 
 	public Ticket() {
 	}
@@ -31,6 +33,14 @@ public class Ticket implements Serializable {
 
 	public int getId() {
 		return this.id;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
 	}
 
 	public void setId(int id) {

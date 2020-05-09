@@ -66,12 +66,12 @@ public class AccountDao {
 		return u;
 	}
 
-	public int changePassword(Account acc, String newPass) {
+	public int changePassword(int id, String newPass) {
 		String sql = "update account set password=? where id=?";
 		try {
 			PreparedStatement st = connection.prepareStatement(sql);
 			st.setString(1, newPass);
-			st.setInt(2, acc.getId());
+			st.setInt(2, id);
 			return st.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

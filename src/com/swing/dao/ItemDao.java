@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.swing.config.JdbcConnection;
+import com.swing.model.HistoryOrderModel;
 import com.swing.model.Item;
 
 public class ItemDao {
@@ -62,6 +63,22 @@ public class ItemDao {
 			st.setInt(3, order_id);
 			st.executeUpdate();
 		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void getOrderItem(HistoryOrderModel ho) {
+		String sql = "select * from item where order_id=" + ho.getOrder_id();
+		try {
+			PreparedStatement st = connection.prepareStatement(sql);
+			ResultSet rs = st.executeQuery();
+			while(rs.next()) {
+				String items = (ho.getItems()==null)?"":ho.getItems();
+				items +=(rs.getString(2)+": "+ rs.getInt(3)+ " ");
+				ho.setItems(items);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

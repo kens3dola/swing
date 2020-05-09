@@ -8,8 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.swing.config.JdbcConnection;
+import com.swing.model.HistoryOrderModel;
 import com.swing.model.Movie;
 import com.swing.model.Schedule;
+import com.swing.model.Showtime;
 
 public class ScheduleDao {
 	private Connection connection;
@@ -56,4 +58,5 @@ public class ScheduleDao {
 		}
 		return sches;
 	}
+
 }

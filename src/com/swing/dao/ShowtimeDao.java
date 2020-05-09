@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.swing.config.JdbcConnection;
+import com.swing.model.HistoryOrderModel;
 import com.swing.model.Schedule;
 import com.swing.model.Showtime;
 
@@ -104,5 +105,22 @@ public class ShowtimeDao {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public void getOrderShowtime(HistoryOrderModel ho, int id) {
+		String sql = "select * from showtime where id=" + id;
+		try {
+			PreparedStatement st = connection.prepareStatement(sql);
+			ResultSet rs = st.executeQuery();
+			while(rs.next()) {
+				ho.setRoom(rs.getString(5));
+				ho.setShow_date(rs.getDate(4));
+				ho.setShowtime(new Schedule(rs.getInt(2), ""+rs.getInt(2)).toString());
+				new MovieDao().getOrderMovie(ho,rs.getInt(3));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
