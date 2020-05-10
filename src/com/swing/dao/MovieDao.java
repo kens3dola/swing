@@ -41,7 +41,7 @@ public class MovieDao {
 		return null;
 	}
 
-	public void add(String name, String image, int price)  {
+	public int add(String name, String image, int price)  {
 		String sql = "insert into movie (name, image, price) value(?,?,?)";
 		Connection connection;
 		try {
@@ -50,7 +50,7 @@ public class MovieDao {
 			st.setString(1, name);
 			st.setString(2, image);
 			st.setInt(3, price);
-			st.executeUpdate();
+			return st.executeUpdate();
 		} catch (ClassNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -58,6 +58,7 @@ public class MovieDao {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		return 0;
 	}
 
 	public Movie getMovieById(int id) {
@@ -80,21 +81,20 @@ public class MovieDao {
 		return movie;
 	}
 
-	public boolean updateMovie(Movie movie) {
-		boolean rowUpdated = false;
+	public int updateMovie(Movie movie) {
 		try (Connection connection = JdbcConnection.getConnection();
 				PreparedStatement statement = connection.prepareStatement(UPDATE_MOVIE_SQL);) {
 			statement.setString(1, movie.getName());
 			statement.setInt(2, movie.getPrice());
 			statement.setString(3, movie.getImage());
 			statement.setInt(4, movie.getId());
-			rowUpdated = statement.executeUpdate()>0;
+			return statement.executeUpdate();
 		} catch (SQLException throwables) {
 			throwables.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		return rowUpdated;
+		return -1;
 	}
 
 	private void printSQLException(SQLException ex) {
@@ -129,12 +129,12 @@ public class MovieDao {
 		return movies;
 	}
 
-	public void delete(int id) {
+	public int delete(int id) {
 		try {
 			Connection con = JdbcConnection.getConnection();
 			String sql = "delete from movie where id="+id;
 			PreparedStatement statement = con.prepareStatement(sql);
-			statement.executeUpdate();
+			return statement.executeUpdate();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -143,10 +143,10 @@ public class MovieDao {
 			e.printStackTrace();
 		}
 		
-		
+		return 0;
 	}
 
-	public void getOrderMovie(HistoryOrderModel ho, int id) {
+	public boolean getOrderMovie(HistoryOrderModel ho, int id) {
 		String sql = "select * from movie where id=" + id;
 		try {
 			Connection con = null;
@@ -161,9 +161,11 @@ public class MovieDao {
 			while(rs.next()) {
 				ho.setMovie(rs.getString(2));
 			}
+			return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return false;
 	}
 }

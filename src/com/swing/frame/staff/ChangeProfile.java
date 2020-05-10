@@ -37,21 +37,21 @@ public class ChangeProfile extends JFrame {
 	private JTextField ageF;
 	private StaffDao staffDao;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ChangeProfile frame = new ChangeProfile(1);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	/**
+//	 * Launch the application.
+//	 */
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					ChangeProfile frame = new ChangeProfile(1);
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the frame.
@@ -164,7 +164,9 @@ public class ChangeProfile extends JFrame {
 					staffDao.update(st);
 					JOptionPane.showMessageDialog(null, "Updated");
 					dispose();
-					new StaffHome(st.getAccountId()).setVisible(true);
+					StaffHome sh = new StaffHome(st.getAccountId());
+					sh.setVisible(true);
+					sh.setLocationRelativeTo(null);
 				}catch(NumberFormatException ex) {
 					JOptionPane.showMessageDialog(null, "Age must be a number");
 				}

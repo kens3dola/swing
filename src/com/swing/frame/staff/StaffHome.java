@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,7 +15,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -30,6 +28,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import com.swing.config.ImageIc;
 import com.swing.dao.AccountDao;
 import com.swing.dao.ItemDao;
 import com.swing.dao.MovieDao;
@@ -48,6 +47,9 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 import java.awt.Font;
 import java.awt.SystemColor;
+import javax.swing.border.EtchedBorder;
+import java.awt.Insets;
+import java.awt.Cursor;
 
 public class StaffHome extends JFrame {
 
@@ -105,71 +107,90 @@ public class StaffHome extends JFrame {
 	private final JLabel lblNewLabel_4 = new JLabel("Popcorn : 1$/1");
 	private final JLabel lblNewLabel_4_1 = new JLabel("Coca : 1$/1");
 	private final JLabel tvImg = new JLabel("");
+	private final JButton btnNewButton_3_1 = new JButton("");
+	private final JButton btnNewButton_4 = new JButton("Home");
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					StaffHome frame = new StaffHome(2);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	/**
+//	 * Launch the application.
+//	 */
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					StaffHome frame = new StaffHome(2);
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the frame.
 	 */
 	public StaffHome(int id) {
+		setUndecorated(true);
+		setBackground(Color.RED);
 		setTitle("Cinema");
 		setResizable(false);
-		setLocationRelativeTo(null);
-		try {
-			accountDao = new AccountDao();
-			movieDao = new MovieDao();
-			scheDao = new ScheduleDao();
-			showDao = new ShowtimeDao();
-			ticDao = new TicketDao();
-			orderDao = new OrderDao();
-			itemDao = new ItemDao();
-			staffDao = new StaffDao();
-			list = movieDao.list(movieDao.getAllMovies());
-			size = list.size();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		accountDao = new AccountDao();
+		movieDao = new MovieDao();
+		scheDao = new ScheduleDao();
+		showDao = new ShowtimeDao();
+		ticDao = new TicketDao();
+		orderDao = new OrderDao();
+		itemDao = new ItemDao();
+		staffDao = new StaffDao();
+		list = movieDao.list(movieDao.getAllMovies());
+		size = list.size();
 		account_id = id;
 		staff_id = staffDao.getStaff(id).getId();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLocationRelativeTo(null);
-		setBounds(100, 100, 800, 600);
+		setBounds(100, 100, 784, 564);
 
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setForeground(Color.BLACK);
 		menuBar.setBorderPainted(false);
-		menuBar.setBackground(Color.WHITE);
+		menuBar.setBackground(new Color(255, 204, 153));
 		setJMenuBar(menuBar);
+		btnNewButton_4.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnNewButton_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				StaffHome sh = new StaffHome(account_id);
+				sh.setVisible(true);
+				sh.setLocationRelativeTo(null);
+			}
+		});
+		btnNewButton_4.setForeground(new Color(0, 51, 255));
+		btnNewButton_4.setMnemonic('H');
+		btnNewButton_4.setFocusTraversalKeysEnabled(false);
+		btnNewButton_4.setFocusPainted(false);
+		btnNewButton_4.setBorder(null);
+		btnNewButton_4.setBackground(new Color(255, 204, 153));
+		btnNewButton_4.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		btnNewButton_4.setIcon(null);
+
+		menuBar.add(btnNewButton_4);
 
 		JMenu mnNewMenu = new JMenu("Option");
+		mnNewMenu.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		mnNewMenu.setMargin(new Insets(2, 4, 2, 2));
+		mnNewMenu.setRequestFocusEnabled(false);
+		mnNewMenu.setOpaque(true);
+		mnNewMenu.setMnemonic('O');
 		mnNewMenu.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-		mnNewMenu.setBackground(Color.WHITE);
+		mnNewMenu.setBackground(new Color(255, 204, 153));
 		mnNewMenu.setHorizontalAlignment(SwingConstants.RIGHT);
-		mnNewMenu.setForeground(Color.BLACK);
+		mnNewMenu.setForeground(new Color(0, 51, 255));
 		menuBar.add(mnNewMenu);
 
 		JButton btnNewButton_1 = new JButton("Change profile");
+		btnNewButton_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnNewButton_1.setBackground(Color.WHITE);
-		btnNewButton_1.setForeground(Color.BLACK);
+		btnNewButton_1.setBackground(new Color(255, 255, 255));
+		btnNewButton_1.setForeground(new Color(51, 153, 255));
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
@@ -177,6 +198,9 @@ public class StaffHome extends JFrame {
 				;
 			}
 		});
+		btnNewButton_2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnNewButton_2.setForeground(new Color(51, 153, 255));
+		btnNewButton_2.setBackground(new Color(255, 255, 255));
 		btnNewButton_2.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -188,14 +212,52 @@ public class StaffHome extends JFrame {
 		mnNewMenu.add(btnNewButton_1);
 
 		JButton btnNewButton = new JButton("Change password");
+		btnNewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnNewButton.setForeground(new Color(51, 153, 255));
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnNewButton.setBackground(Color.WHITE);
+		btnNewButton.setBackground(new Color(255, 255, 255));
 		mnNewMenu.add(btnNewButton);
 
 		JButton logoutBtn = new JButton("Logout");
+		logoutBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		logoutBtn.setForeground(new Color(51, 153, 255));
 		logoutBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		logoutBtn.setBackground(Color.WHITE);
+		logoutBtn.setBackground(new Color(255, 255, 255));
 		mnNewMenu.add(logoutBtn);
+
+		JPanel panel = new JPanel();
+		panel.setBackground(new Color(255, 204, 153));
+		menuBar.add(panel);
+		panel.setLayout(null);
+
+		JButton btnNewButton_3 = new JButton("");
+		btnNewButton_3.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnNewButton_3.setBorder(null);
+		btnNewButton_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(1);
+			}
+		});
+		btnNewButton_3.setBackground(new Color(255, 204, 153));
+		btnNewButton_3.setFocusTraversalKeysEnabled(false);
+		btnNewButton_3.setFocusPainted(false);
+		btnNewButton_3.setIcon(new ImageIcon(StaffHome.class.getResource("/design/icons8_delete_24px.png")));
+		btnNewButton_3.setBounds(659, 0, 24, 24);
+		panel.add(btnNewButton_3);
+		btnNewButton_3_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnNewButton_3_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setState(JFrame.ICONIFIED);
+			}
+		});
+		btnNewButton_3_1.setIcon(new ImageIcon(StaffHome.class.getResource("/design/icons8_expand_arrow_24px.png")));
+		btnNewButton_3_1.setFocusTraversalKeysEnabled(false);
+		btnNewButton_3_1.setFocusPainted(false);
+		btnNewButton_3_1.setBorder(null);
+		btnNewButton_3_1.setBackground(new Color(255, 204, 153));
+		btnNewButton_3_1.setBounds(625, 0, 24, 24);
+
+		panel.add(btnNewButton_3_1);
 		logoutBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
@@ -216,15 +278,30 @@ public class StaffHome extends JFrame {
 
 	private void slide() {
 		contentPane = new JLayeredPane();
+		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		moviePane.setBackground(SystemColor.text);
+		moviePane.setForeground(new Color(255, 204, 153));
+		moviePane.setBackground(new Color(255, 204, 153));
 
 		// moviePane
 		contentPane.add(moviePane);
 		moviePaneInit(moviePane);
-//		seatPaneInit(seatPane, null);
+
+		JLabel lblNewLabel_5 = new JLabel("Now showing");
+		lblNewLabel_5.setIcon(new ImageIcon(StaffHome.class.getResource("/design/icons8_film_reel_50px.png")));
+		lblNewLabel_5.setForeground(new Color(51, 153, 204));
+		lblNewLabel_5.setBackground(Color.WHITE);
+		lblNewLabel_5.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_5.setFont(new Font("Segoe UI Black", Font.PLAIN, 24));
+		lblNewLabel_5.setBounds(36, 11, 720, 55);
+		moviePane.add(lblNewLabel_5);
+
+//		seatPaneInit(seatPane,new Showtime(1, 1, 1, new Date(), "A"));
+		seatPane.setBackground(new Color(255, 204, 153));
+
+//		itemPaneInit(itemPane, null);
 
 		contentPane.add(seatPane);
 		seatPane.setLayout(null);
@@ -245,10 +322,10 @@ public class StaffHome extends JFrame {
 
 		seat_price.setBounds(484, 480, 54, 40);
 		seatPane.add(seat_price);
-		tvImg.setBounds(10, 11, 774, 266);
-		
+		tvImg.setBounds(10, 11, 764, 266);
+
 		seatPane.add(tvImg);
-		itemPane.setBackground(SystemColor.text);
+		itemPane.setBackground(new Color(255, 204, 153));
 		// seatPane
 		contentPane.add(itemPane);
 		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -261,14 +338,14 @@ public class StaffHome extends JFrame {
 		item_price.setBounds(397, 436, 91, 31);
 
 		itemPane.add(item_price);
+		lblNewLabel_4.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_4.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblNewLabel_4.setForeground(SystemColor.textHighlight);
-		lblNewLabel_4.setBounds(20, 361, 111, 42);
 
 		itemPane.add(lblNewLabel_4);
+		lblNewLabel_4_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_4_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblNewLabel_4_1.setForeground(SystemColor.textHighlight);
-		lblNewLabel_4_1.setBounds(413, 361, 100, 42);
 
 		itemPane.add(lblNewLabel_4_1);
 
@@ -278,11 +355,11 @@ public class StaffHome extends JFrame {
 		Movie m = list.get(current);
 		movie_id.setHorizontalAlignment(SwingConstants.CENTER);
 		movie_id.setText("id:" + m.getId());
-		name.setForeground(SystemColor.textHighlight);
-		name.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		name.setForeground(new Color(51, 153, 204));
+		name.setFont(new Font("Arial", Font.BOLD, 14));
 		name.setText("Name: " + m.getName());
-		price.setForeground(SystemColor.textHighlight);
-		price.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		price.setForeground(new Color(51, 153, 204));
+		price.setFont(new Font("Arial", Font.PLAIN, 14));
 		price.setText("Price: " + m.getPrice());
 		image.setIcon(createImgIcon(m.getImage()));
 	}
@@ -290,7 +367,7 @@ public class StaffHome extends JFrame {
 	private ImageIcon createImgIcon(String imgName) {
 		if (StaffHome.class.getResource("/images/" + imgName) != null) {
 			ImageIcon i = new ImageIcon(new ImageIcon(StaffHome.class.getResource("/images/" + imgName)).getImage()
-					.getScaledInstance(700, 437, Image.SCALE_SMOOTH));
+					.getScaledInstance(764, 384, Image.SCALE_SMOOTH));
 			return i;
 		}
 		return new ImageIcon();
@@ -304,6 +381,7 @@ public class StaffHome extends JFrame {
 	}
 
 	private void moviePaneInit(JPanel moviePane) {
+		date.getCalendarButton().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		date.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				if (date.getDate() != null) {
@@ -314,8 +392,8 @@ public class StaffHome extends JFrame {
 				}
 			}
 		});
-		lblNewLabel.setForeground(SystemColor.textHighlight);
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel.setForeground(new Color(51, 153, 204));
+		lblNewLabel.setFont(new Font("Arial", Font.PLAIN, 14));
 
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setBounds(259, 455, 46, 31);
@@ -323,23 +401,29 @@ public class StaffHome extends JFrame {
 		moviePane.add(lblNewLabel);
 		date.setBounds(314, 455, 159, 31);
 		moviePane.add(date);
+		shows.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		shows.setBackground(SystemColor.textHighlightText);
 		shows.setFocusTraversalKeysEnabled(false);
-		shows.setForeground(new Color(0, 0, 0));
+		shows.setForeground(new Color(51, 51, 204));
 		shows.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		shows.setBounds(490, 455, 181, 31);
 		moviePane.add(shows);
 		moviePane.setBounds(0, 0, 784, 539);
 		moviePane.setLayout(null);
-		image.setBounds(56, 11, 700, 437);
+		image.setBounds(10, 64, 764, 384);
 		moviePane.add(image);
-		first.setBorder(null);
-		first.setIcon(new ImageIcon(StaffHome.class.getResource("/design/icons8_first_22px.png")));
-		first.setBackground(SystemColor.textHighlightText);
-		first.setForeground(SystemColor.textInactiveText);
+		first.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		first.setFocusTraversalKeysEnabled(false);
+		first.setFocusPainted(false);
+		first.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.BLUE, Color.CYAN));
+		first.setIcon(new ImageIcon(StaffHome.class.getResource("/design/icons8_first_22px_3.png")));
+		first.setBackground(new Color(255, 255, 255));
+		first.setForeground(new Color(0, 153, 204));
 		first.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		first.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				date.setDate(null);
+				shows.setSelectedItem(null);
 				current = 0;
 				showMovie();
 			}
@@ -347,15 +431,20 @@ public class StaffHome extends JFrame {
 
 		first.setBounds(36, 497, 89, 31);
 		moviePane.add(first);
-		prev.setBorder(null);
-		prev.setIcon(new ImageIcon(StaffHome.class.getResource("/design/icons8_previous_22px_1.png")));
-		prev.setBackground(SystemColor.textHighlightText);
-		prev.setForeground(SystemColor.textInactiveText);
+		prev.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		prev.setFocusTraversalKeysEnabled(false);
+		prev.setFocusPainted(false);
+		prev.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.BLUE, Color.CYAN));
+		prev.setIcon(new ImageIcon(StaffHome.class.getResource("/design/icons8_previous_22px_3.png")));
+		prev.setBackground(new Color(255, 255, 255));
+		prev.setForeground(new Color(0, 153, 204));
 		prev.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
 		prev.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (current > 0) {
+					date.setDate(null);
+					shows.setSelectedItem(null);
 					current--;
 					showMovie();
 				}
@@ -363,14 +452,19 @@ public class StaffHome extends JFrame {
 		});
 		prev.setBounds(135, 497, 89, 31);
 		moviePane.add(prev);
-		next.setBorder(null);
-		next.setIcon(new ImageIcon(StaffHome.class.getResource("/design/icons8_next_22px.png")));
-		next.setBackground(SystemColor.textHighlightText);
-		next.setForeground(SystemColor.textInactiveText);
+		next.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		next.setFocusTraversalKeysEnabled(false);
+		next.setFocusPainted(false);
+		next.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.BLUE, Color.CYAN));
+		next.setIcon(new ImageIcon(StaffHome.class.getResource("/design/icons8_next_22px_4.png")));
+		next.setBackground(new Color(255, 255, 255));
+		next.setForeground(new Color(0, 153, 204));
 		next.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		next.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (current < size - 1) {
+					date.setDate(null);
+					shows.setSelectedItem(null);
 					current++;
 					showMovie();
 				}
@@ -379,13 +473,18 @@ public class StaffHome extends JFrame {
 
 		next.setBounds(235, 497, 89, 31);
 		moviePane.add(next);
-		last.setBorder(null);
-		last.setIcon(new ImageIcon(StaffHome.class.getResource("/design/icons8_last_22px.png")));
-		last.setBackground(SystemColor.textHighlightText);
-		last.setForeground(SystemColor.textInactiveText);
+		last.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		last.setFocusTraversalKeysEnabled(false);
+		last.setFocusPainted(false);
+		last.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.BLUE, Color.CYAN));
+		last.setIcon(new ImageIcon(StaffHome.class.getResource("/design/icons8_last_22px_1.png")));
+		last.setBackground(new Color(255, 255, 255));
+		last.setForeground(new Color(0, 153, 204));
 		last.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		last.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				date.setDate(null);
+				shows.setSelectedItem(null);
 				current = size - 1;
 				showMovie();
 			}
@@ -393,10 +492,13 @@ public class StaffHome extends JFrame {
 
 		last.setBounds(334, 497, 89, 31);
 		moviePane.add(last);
-		movieNextBtn.setBorder(null);
-		movieNextBtn.setIcon(new ImageIcon(StaffHome.class.getResource("/design/icons8_next_22px_2.png")));
-		movieNextBtn.setBackground(SystemColor.text);
-		movieNextBtn.setForeground(SystemColor.textHighlightText);
+		movieNextBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		movieNextBtn.setFocusTraversalKeysEnabled(false);
+		movieNextBtn.setFocusPainted(false);
+		movieNextBtn.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.BLUE, Color.CYAN));
+		movieNextBtn.setIcon(new ImageIcon(StaffHome.class.getResource("/design/icons8_enter_22px.png")));
+		movieNextBtn.setBackground(new Color(255, 255, 255));
+		movieNextBtn.setForeground(new Color(0, 153, 204));
 		movieNextBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		movieNextBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -418,14 +520,16 @@ public class StaffHome extends JFrame {
 		price.setBounds(681, 455, 70, 31);
 		moviePane.add(price);
 
-		movie_id.setBounds(0, 11, 46, 433);
+		movie_id.setBounds(0, 11, 1, 1);
 		moviePane.add(movie_id);
 	}
 
 	private void seatPaneInit(JPanel seatPane, Showtime show) {
+		tvImg.setIcon(ImageIc.getImgIcon(this.getClass(), "/design/tv.jpg", 774, 250));
+		seatNextBtn.setForeground(new Color(51, 153, 204));
 		seatNextBtn.setBackground(SystemColor.textHighlightText);
 		seatNextBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		seatNextBtn.setIcon(new ImageIcon(StaffHome.class.getResource("/design/icons8_next_22px_2.png")));
+		seatNextBtn.setIcon(new ImageIcon(StaffHome.class.getResource("/design/icons8_enter_22px.png")));
 
 		seatNextBtn.setBounds(650, 480, 100, 40);
 		seatPane.add(seatNextBtn);
@@ -461,19 +565,19 @@ public class StaffHome extends JFrame {
 			seatPane.add(addToggleButton(seatName, isAvailable, i, 0, seatChosen));
 		}
 		for (int i = 9; i < 18; i++) {
-			String seatName = "A" + (i - 9);
+			String seatName = "A" + (i - 8);
 			boolean isAvailable = true;
 			for (Ticket t : ticList) {
-				if (t.getId() == (i + 1))
+				if (t.getSeatId() == (i + 1))
 					isAvailable = false;
 			}
 			seatPane.add(addToggleButton(seatName, isAvailable, i - 9, 1, seatChosen));
 		}
 		for (int i = 18; i < 27; i++) {
-			String seatName = "B" + (i - 18);
+			String seatName = "B" + (i - 17);
 			boolean isAvailable = true;
 			for (Ticket t : ticList) {
-				if (t.getId() == (i + 1))
+				if (t.getSeatId() == (i + 1))
 					isAvailable = false;
 			}
 			seatPane.add(addToggleButton(seatName, isAvailable, i - 18, 2, seatChosen));
@@ -481,18 +585,21 @@ public class StaffHome extends JFrame {
 	}
 
 	private void itemPaneInit(JPanel itemPane, List<Ticket> ticL) {
+		lblNewLabel_4.setBounds(20, 381, 129, 42);
+		lblNewLabel_4_1.setBounds(402, 381, 120, 42);
 		itemPane.setBounds(0, 0, 784, 539);
 		itemPane.setLayout(null);
 
 		popcorn.setIcon(new ImageIcon(new ImageIcon(StaffHome.class.getResource("/items/popcorn.jpg")).getImage()
 				.getScaledInstance(382, 339, Image.SCALE_SMOOTH)));
-		popcorn.setBounds(10, 11, 382, 339);
+		popcorn.setBounds(10, 21, 382, 339);
 		itemPane.add(popcorn);
 
 		coca.setIcon(new ImageIcon(new ImageIcon(StaffHome.class.getResource("/items/coca.jpg")).getImage()
 				.getScaledInstance(382, 339, Image.SCALE_SMOOTH)));
-		coca.setBounds(392, 11, 382, 339);
+		coca.setBounds(392, 21, 382, 339);
 		itemPane.add(coca);
+		pop.setForeground(new Color(0, 51, 255));
 		pop.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				int price = Integer.parseInt(String.valueOf(pop.getValue()));
@@ -502,24 +609,24 @@ public class StaffHome extends JFrame {
 		});
 
 		pop.setModel(new SpinnerNumberModel(0, 0, null, 1));
-		pop.setBounds(260, 361, 52, 42);
+		pop.setBounds(260, 383, 132, 42);
 		itemPane.add(pop);
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblNewLabel_2.setForeground(SystemColor.textHighlight);
 
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_2.setBounds(155, 364, 80, 39);
+		lblNewLabel_2.setBounds(159, 383, 91, 39);
 		itemPane.add(lblNewLabel_2);
 		lblNewLabel_2_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblNewLabel_2_1.setForeground(SystemColor.textHighlight);
 
 		lblNewLabel_2_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_2_1.setBounds(515, 361, 80, 42);
+		lblNewLabel_2_1.setBounds(532, 383, 100, 42);
 		itemPane.add(lblNewLabel_2_1);
 		coc.setForeground(SystemColor.text);
 
 		coc.setModel(new SpinnerNumberModel(0, 0, null, 1));
-		coc.setBounds(616, 361, 52, 42);
+		coc.setBounds(642, 383, 132, 42);
 		itemPane.add(coc);
 		coc.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
@@ -528,8 +635,9 @@ public class StaffHome extends JFrame {
 				item_price.setText((price + price2) + " $");
 			}
 		});
-		done.setBackground(SystemColor.textHighlight);
-		done.setForeground(SystemColor.text);
+		done.setIcon(new ImageIcon(StaffHome.class.getResource("/design/icons8_tick_box_24px.png")));
+		done.setBackground(new Color(255, 255, 255));
+		done.setForeground(new Color(0, 51, 255));
 		done.setFont(new Font("Tahoma", Font.PLAIN, 16));
 
 		done.addActionListener(new ActionListener() {
@@ -565,8 +673,11 @@ public class StaffHome extends JFrame {
 							"Successfully ordered. Do you want to make a new order?");
 					if (choice == JOptionPane.YES_OPTION) {
 						dispose();
-						new StaffHome(account_id).setVisible(true);
+						StaffHome sh = new StaffHome(account_id);
+						sh.setVisible(true);
+						sh.setLocationRelativeTo(null);
 					} else {
+						dispose();
 						new Login().setVisible(true);
 					}
 				}
@@ -580,7 +691,9 @@ public class StaffHome extends JFrame {
 		JToggleButton btn = new JToggleButton((x + 1 + 9 * y) + "-" + name);
 		btn.setBounds(60 + x * 75, 280 + y * 55, 65, 50);
 		btn.setBackground(Color.white);
+		btn.setForeground(new Color(51, 103, 204));
 		btn.setHorizontalAlignment(SwingConstants.LEFT);
+		btn.setFont(new Font("Segoe UI", Font.BOLD, 11));
 		if (!isAvailable)
 			btn.setEnabled(false);
 		btn.addActionListener(new ActionListener() {

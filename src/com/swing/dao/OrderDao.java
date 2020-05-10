@@ -30,7 +30,7 @@ public class OrderDao {
 	}
 
 	public ResultSet getAllOrder() {
-		String sql = "select * from order";
+		String sql = "select * from sqa.order";
 		try {
 			PreparedStatement st = connection.prepareStatement(sql);
 			return st.executeQuery();
@@ -46,7 +46,7 @@ public class OrderDao {
 		try {
 			while (rs.next()) {
 				try {
-					l.add(new Order(rs.getInt(1), rs.getInt(2), rs.getDate(3), rs.getString(4)));
+					l.add(new Order(rs.getInt("id"), rs.getInt("staff_id"), rs.getDate("date"), rs.getString("customer")));
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -124,17 +124,18 @@ public class OrderDao {
 		return list;
 	}
 	
-	public void setPrice( int id, int price) {
-		String sql = "update order set price = ? where id = ?";
+	public int setPrice( int id, int price) {
+		String sql = "update sqa.order set price = ? where id = ?";
 		PreparedStatement ps;
 		try {
 			ps = connection.prepareStatement(sql);
 			ps.setInt(1, price);
 			ps.setInt(2, id);
-			ps.executeUpdate();
+			return ps.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return -1;
 	}
 }

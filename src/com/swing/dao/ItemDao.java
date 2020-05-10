@@ -43,7 +43,7 @@ public class ItemDao {
 		try {
 			while(rs.next()) {
 				try {
-					l.add(new Item(rs.getInt(1),rs.getString(2),rs.getInt(3),rs.getInt(4),rs.getString(5)));
+					l.add(new Item(rs.getInt(1),rs.getString(2),rs.getInt(3),rs.getInt(4)));
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -54,20 +54,21 @@ public class ItemDao {
 		return l;
 	}
 
-	public void add(String name, int quantity, int order_id) {
+	public int add(String name, int quantity, int order_id) {
 		String sql = "insert into item(name,quantity,order_id) value(?,?,?)";
 		try {
 			PreparedStatement st = connection.prepareStatement(sql);
 			st.setString(1, name);
 			st.setInt(2, quantity);
 			st.setInt(3, order_id);
-			st.executeUpdate();
+			return st.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return -1;
 	}
 
-	public void getOrderItem(HistoryOrderModel ho) {
+	public boolean getOrderItem(HistoryOrderModel ho) {
 		String sql = "select * from item where order_id=" + ho.getOrder_id();
 		try {
 			PreparedStatement st = connection.prepareStatement(sql);
@@ -77,9 +78,11 @@ public class ItemDao {
 				items +=(rs.getString(2)+": "+ rs.getInt(3)+ " ");
 				ho.setItems(items);
 			}
+			return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return false;
 	}
 }

@@ -44,7 +44,7 @@ public class StaffDao {
 		}
 		return null;
 	}
-	public void update(Staff st) {
+	public int update(Staff st) {
 		String sql = "update staff set name=?, email=?, phone=?, gender=?, age=? where id=?";
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
@@ -54,10 +54,11 @@ public class StaffDao {
 			ps.setString(4, st.getGender());
 			ps.setInt(5, st.getAge());
 			ps.setInt(6, st.getId());
-			ps.executeUpdate();
+			return ps.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}	
+		}
+		return -1;
 	}
 }

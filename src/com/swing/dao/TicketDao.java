@@ -81,20 +81,22 @@ public class TicketDao {
 		return null;
 	}
 
-	public void add(Ticket tic) {
-		String sql = "insert into ticket(order_id,showtime_id,seat_id) value(?,?,?)";
+	public int add(Ticket tic) {
+		String sql = "insert into ticket(order_id,showtime_id,seat_id, price) value(?,?,?,?)";
 		try {
 			PreparedStatement st = connection.prepareStatement(sql);
 			st.setInt(1, tic.getOrderId());
 			st.setInt(2, tic.getShowtimeId());
 			st.setInt(3, tic.getSeatId());
-			st.executeUpdate();
+			st.setInt(4, tic.getPrice());
+			return st.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return -1;
 	}
 
-	public void getOrderTicket(HistoryOrderModel ho) {
+	public boolean getOrderTicket(HistoryOrderModel ho) {
 		String sql = "select * from ticket where order_id=" + ho.getOrder_id();
 		try {
 			PreparedStatement st = connection.prepareStatement(sql);
@@ -105,9 +107,11 @@ public class TicketDao {
 				ho.setSeats(seats);
 				new ShowtimeDao().getOrderShowtime(ho, rs.getInt(3));
 			}
+			return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return false;
 	}
 }

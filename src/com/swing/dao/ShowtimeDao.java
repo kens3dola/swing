@@ -58,7 +58,7 @@ public class ShowtimeDao {
 		return l;
 	}
 
-	public void add(int movieId, int scheduleId, Date date, String room) {
+	public int add(int movieId, int scheduleId, Date date, String room) {
 		String pattern = "yyyy-MM-dd";
 		DateFormat df = new SimpleDateFormat(pattern);
 		String sql = "insert into showtime(schedule_id,movie_id,date, room) value(?,?,?,?)";
@@ -68,23 +68,25 @@ public class ShowtimeDao {
 			st.setInt(2, movieId);
 			st.setString(3, df.format(date));
 			st.setString(4, room);
-			st.executeUpdate();
+			return st.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return -1;
 	}
 
-	public void delete(int id) {
+	public int delete(int id) {
 		String sql = "delete from showtime where id = "+id;
 
 		try {
 			PreparedStatement st = connection.prepareStatement(sql);
-			st.executeUpdate();
+			return st.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return -1;
 	}
 	public List<Showtime> getByMovieId(int m_id, Date date) {
 		String pattern = "yyyy-MM-dd";
@@ -107,7 +109,7 @@ public class ShowtimeDao {
 		return null;
 	}
 
-	public void getOrderShowtime(HistoryOrderModel ho, int id) {
+	public boolean getOrderShowtime(HistoryOrderModel ho, int id) {
 		String sql = "select * from showtime where id=" + id;
 		try {
 			PreparedStatement st = connection.prepareStatement(sql);
@@ -118,9 +120,11 @@ public class ShowtimeDao {
 				ho.setShowtime(new Schedule(rs.getInt(2), ""+rs.getInt(2)).toString());
 				new MovieDao().getOrderMovie(ho,rs.getInt(3));
 			}
+			return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return false;
 	}
 }

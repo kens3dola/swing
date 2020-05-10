@@ -18,7 +18,6 @@ public class Item implements Serializable {
 
 	private int quantity;
 
-	private String room;
 
 	public int getId() {
 		return id;
@@ -52,21 +51,12 @@ public class Item implements Serializable {
 		this.quantity = quantity;
 	}
 
-	public String getRoom() {
-		return room;
-	}
-
-	public void setRoom(String room) {
-		this.room = room;
-	}
-
-	public Item(int id, String name, int orderId, int quantity, String room) {
+	public Item(int id, String name, int orderId, int quantity) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.orderId = orderId;
 		this.quantity = quantity;
-		this.room = room;
 	}
 	
 }

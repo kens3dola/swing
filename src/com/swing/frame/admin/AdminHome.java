@@ -70,18 +70,18 @@ public class AdminHome extends JFrame {
 	private JTextField password;
 	private final ButtonGroup roleBtnGroup = new ButtonGroup();
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AdminHome frame = new AdminHome(0);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					AdminHome frame = new AdminHome(0);
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the frame.
@@ -100,15 +100,8 @@ public class AdminHome extends JFrame {
 		movieDao = new MovieDao();
 		scheDao = new ScheduleDao();
 		showDao = new ShowtimeDao();
-		try {
-			accountDao = new AccountDao();
-		} catch (ClassNotFoundException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		} catch (SQLException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
+		accountDao = new AccountDao();
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 756, 576);
 
@@ -358,7 +351,7 @@ public class AdminHome extends JFrame {
 		room.setModel(new DefaultComboBoxModel(new String[] { "A", "B", "C", "D" }));
 		room.setBounds(95, 361, 221, 31);
 		panel1.add(room);
-		
+
 		JLabel lblNewLabel_11 = new JLabel("Add new show");
 		lblNewLabel_11.setForeground(SystemColor.textHighlight);
 		lblNewLabel_11.setIcon(new ImageIcon(AdminHome.class.getResource("/design/icons8_tv_show_50px.png")));
@@ -533,7 +526,7 @@ public class AdminHome extends JFrame {
 
 		movie_id.setBounds(10, 39, 46, 14);
 		panel1.add(movie_id);
-		
+
 		JLabel lblNewLabel_10 = new JLabel("Add new movie");
 		lblNewLabel_10.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_10.setForeground(SystemColor.textHighlight);
@@ -565,7 +558,7 @@ public class AdminHome extends JFrame {
 		user_table.getTableHeader().setBackground(Color.white);
 		user_table.getTableHeader().setForeground(SystemColor.textHighlight);
 		user_table.getTableHeader().setFont(new Font("Tahoma", Font.PLAIN, 14));
-		
+
 		JScrollPane scroll1 = new JScrollPane(user_table);
 		scroll1.setBounds(315, 45, 416, 446);
 		panel1.add(scroll1);
@@ -693,7 +686,7 @@ public class AdminHome extends JFrame {
 
 		account_id.setBounds(10, 37, 46, 14);
 		panel1.add(account_id);
-		
+
 		JLabel lblNewLabel_12 = new JLabel("Add new account");
 		lblNewLabel_12.setForeground(SystemColor.textHighlight);
 		lblNewLabel_12.setIcon(new ImageIcon(AdminHome.class.getResource("/design/icons8_user_groups_50px.png")));
