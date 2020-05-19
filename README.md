@@ -6,5 +6,5 @@
  - Download and extract Swing.zip
  2. Deploy
  - Start localhost (Xampp: open and click on start button of MySql)
- - Run file database.sql to instantiate database to localhost (use mysqlworkbench, phpmyadmin,...)
+ - Run file sqa.sql to instantiate database to localhost (use mysqlworkbench, phpmyadmin,...)
  - Run cinema.jar
