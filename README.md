@@ -5,6 +5,6 @@
  - Download and install java jdk 13 and set its directory to environment path
  - Download and extract Swing.zip
  2. Deploy
- - Start localhost:
-  + Xampp: open and click on start button of MySql
+ - Start localhost (Xampp: open and click on start button of MySql)
+ - Run file database.sql to instantiate database to localhost (use mysqlworkbench, phpmyadmin,...)
  - Run cinema.jar
