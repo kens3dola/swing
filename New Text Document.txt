@@ -1,0 +1,4 @@
+@echo off         
+javac src/com/swing/frame/Main.java
+java src/com/swing/frame/Main       
+pause 
